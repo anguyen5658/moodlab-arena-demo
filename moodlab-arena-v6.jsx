@@ -701,7 +701,7 @@ export default function MoodLabArena() {
             {[{id:"control",l:"Control",i:"🎛",c:C.cyan},{id:"arena",l:"Arena",i:"🎮",c:C.cyan},{id:"live",l:"Live",i:"📡",c:C.pink},{id:"me",l:"Me",i:"👤",c:C.purple}].map(t=>{
               const active = tab===t.id;
               return (
-                <div key={t.id} onClick={()=>{setTab(t.id);if(t.id==="arena"){setZone(null);setArenaView("hub");}}} style={{
+                <div key={t.id} onClick={()=>{if(t.id!=="arena"){notify("Coming Soon — Arena Demo Only",C.cyan);return;}setTab(t.id);setZone(null);setArenaView("hub");}} style={{
                   display:"flex",alignItems:"center",gap:active?5:0,
                   padding:active?"7px 14px":"7px 10px",
                   borderRadius:100,cursor:"pointer",
@@ -857,7 +857,7 @@ export default function MoodLabArena() {
             {[{id:"control",l:"Control",i:"🎛",c:C.cyan},{id:"arena",l:"Arena",i:"🎮",c:C.cyan},{id:"live",l:"Live",i:"📡",c:C.pink},{id:"me",l:"Me",i:"👤",c:C.purple}].map(t=>{
               const active = tab===t.id;
               return (
-                <div key={t.id} onClick={()=>{setTab(t.id);if(t.id==="arena"){setZone(null);setArenaView("hub");}}} style={{
+                <div key={t.id} onClick={()=>{if(t.id!=="arena"){notify("Coming Soon — Arena Demo Only",C.cyan);return;}setTab(t.id);setZone(null);setArenaView("hub");}} style={{
                   display:"flex",alignItems:"center",gap:active?5:0,
                   padding:active?"7px 14px":"7px 10px",
                   borderRadius:100,cursor:"pointer",
@@ -1665,7 +1665,7 @@ export default function MoodLabArena() {
           {[{id:"control",l:"Control",i:"🎛",c:C.cyan},{id:"arena",l:"Arena",i:"🎮",c:C.cyan},{id:"live",l:"Live",i:"📡",c:C.pink},{id:"me",l:"Me",i:"👤",c:C.purple}].map(t=>{
             const active = tab===t.id;
             return (
-              <div key={t.id} onClick={()=>{setTab(t.id);if(t.id==="arena"){setZone(null);setArenaView("hub");}}} style={{
+              <div key={t.id} onClick={()=>{if(t.id!=="arena"){notify("Coming Soon — Arena Demo Only",C.cyan);return;}setTab(t.id);setZone(null);setArenaView("hub");}} style={{
                 display:"flex",alignItems:"center",gap:active?5:0,
                 padding:active?"7px 14px":"7px 10px",
                 borderRadius:100,cursor:"pointer",
