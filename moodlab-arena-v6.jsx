@@ -454,11 +454,11 @@ export default function MoodLabArena() {
      Coordinates are % within a 52vh-tall container that starts after jumbotron.
      Container top ≈ 27% of viewport (250px on 932px screen). */
   const HUB_TAP_ZONES = [
-    { key:"arcade",   top:"34%", left:"0%",   width:"22%", height:"10%" },
-    { key:"stage",    top:"34%", right:"0%",  width:"22%", height:"10%" },
-    { key:"wall",     top:"39%", left:"16%",  width:"20%", height:"9%" },
-    { key:"oracle",   top:"37%", right:"11%", width:"22%", height:"9%" },
-    { key:"worldcup", top:"46%", left:"22%",  width:"56%", height:"14%" },
+    { key:"arcade",   top:"38%", left:"0%",   width:"18%", height:"24%" },
+    { key:"stage",    top:"38%", right:"0%",  width:"19%", height:"24%" },
+    { key:"wall",     top:"42%", left:"18%",  width:"16%", height:"18%" },
+    { key:"oracle",   top:"40%", right:"16%", width:"16%", height:"18%" },
+    { key:"worldcup", top:"42%", left:"28%",  width:"28%", height:"22%" },
   ];
 
   /* ── Glass floating buttons ── */
@@ -645,16 +645,16 @@ export default function MoodLabArena() {
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, transparent 0%, transparent 55%, rgba(5,5,16,0.4) 75%, rgba(5,5,16,0.7) 90%)"}}/>
         </div>
 
-        {/* Back button — below header */}
-        <div style={{position:"absolute",top:46,left:14,zIndex:12}}>
+        {/* Back button — below header + ticker */}
+        <div style={{position:"absolute",top:72,left:14,zIndex:12}}>
           <div onClick={walkBack} style={{display:"inline-flex",alignItems:"center",gap:6,cursor:"pointer",padding:"7px 14px",borderRadius:100,...GLASS_CLEAR}}>
             <span style={{fontSize:12,color:C.text2}}>←</span>
             <span style={{fontSize:11,fontWeight:600,color:C.text2}}>Lobby</span>
           </div>
         </div>
 
-        {/* ═══ BOTTOM HUD — liquid glass info card + enter button, just above nav ═══ */}
-        <div style={{position:"absolute",bottom:62,left:10,right:10,zIndex:10,animation:"panelSlideUp 0.4s ease 0.15s both"}}>
+        {/* ═══ BOTTOM HUD — pushes up when chat is open ═══ */}
+        <div style={{position:"absolute",bottom:chatPanel?248:62,left:10,right:10,zIndex:10,animation:"panelSlideUp 0.4s ease 0.15s both",transition:"bottom 0.3s ease"}}>
           {/* Info card — readable liquid glass */}
           <div style={{borderRadius:20,overflow:"hidden",marginBottom:8,...GLASS_CARD}}>
             <div style={{padding:"14px 16px"}}>
@@ -673,7 +673,7 @@ export default function MoodLabArena() {
                 </div>
               </div>
               {/* Scrollable content — compact */}
-              <div style={{maxHeight:"28vh",overflow:"auto",marginBottom:10}}>
+              <div style={{maxHeight:chatPanel?"15vh":"28vh",overflow:"auto",marginBottom:10,transition:"max-height 0.3s ease"}}>
                 {renderFocusContent(viewKey)}
               </div>
               {/* Enter button — centered */}
@@ -768,9 +768,21 @@ export default function MoodLabArena() {
           <video autoPlay loop muted playsInline poster={ARENA_IMAGES.hub} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center"}}>
             <source src={ARENA_VIDEOS.hub} type="video/mp4"/>
           </video>
+          {/* Cali Clear logo — right above the World Cup arch */}
+          <div style={{position:"absolute",top:"42%",left:"50%",transform:"translate(-50%,-50%)",pointerEvents:"none"}}>
+            {/* Outer glow pulse */}
+            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:200,height:140,borderRadius:"50%",background:`radial-gradient(ellipse, ${C.gold}12, transparent 65%)`,animation:"breathe 3s ease-in-out infinite"}}/>
+            {/* Inner bright glow */}
+            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:130,height:90,borderRadius:"50%",background:`radial-gradient(ellipse, ${C.gold}20, transparent 70%)`,animation:"breathe 4s ease-in-out 1s infinite"}}/>
+            {/* Logo */}
+            <img src="assets/arena/cali-clear-logo.png" alt="" style={{
+              position:"relative",width:110,height:"auto",display:"block",
+              filter:`drop-shadow(0 0 10px ${C.gold}70) drop-shadow(0 0 24px ${C.gold}40) drop-shadow(0 0 48px ${C.gold}20)`,
+            }}/>
+          </div>
         </div>
 
-        {/* Clean — no extra lighting effects, let the image speak for itself */}
+        {/* ═══ CALI CLEAR LOGO — at the red circle location ═══ */}
 
         {/* ═══ JUMBOTRON — taller for visual balance ═══ */}
         <div style={{position:"absolute",top:72,left:18,right:18,zIndex:10,animation:"arenaFadeIn 0.6s ease 0.1s both"}}>
@@ -861,11 +873,7 @@ export default function MoodLabArena() {
           </div>
         </div>
 
-        {/* Inline chat — above nav */}
-        {renderInlineChat()}
-
-        {/* Chat button — only on lobby */}
-        {renderGlassButtons()}
+        {/* Chat button + inline chat are now universal at root level */}
       </div>
     );
   };
@@ -1559,7 +1567,7 @@ export default function MoodLabArena() {
 
       {/* Header — always visible across all pages */}
       <div style={{padding:"12px 14px 4px",display:"flex",justifyContent:"space-between",alignItems:"center",position:"relative",zIndex:20}}>
-        <div style={{fontSize:10,fontWeight:800,color:C.text3,letterSpacing:2}}>MOOD LAB</div>
+        <div style={{fontSize:9,fontWeight:600,color:C.text3,letterSpacing:1.5}}>{(tab==="arena"&&!zone&&arenaView==="hub")?"Powered by ":""}<span style={{fontWeight:800,color:C.text2,letterSpacing:2}}>MOOD LAB</span></div>
         <div style={{display:"flex",gap:5,alignItems:"center"}}>
           {/* Input method button */}
           <div onClick={()=>setShowInputPanel(true)} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:100,cursor:"pointer",...LG.pill,border:`1px solid ${activeInput.color}${inputPulse?"50":"18"}`,transition:"all 0.3s",boxShadow:inputPulse?`0 0 10px ${activeInput.color}25`:LG.pill.boxShadow}}>
@@ -1576,8 +1584,8 @@ export default function MoodLabArena() {
         </div>
       </div>
 
-      {/* Live Ticker (Arena hub only — hide during zone focus views) */}
-      {tab==="arena" && (zone || arenaView==="hub") && renderTicker()}
+      {/* Live Ticker — universal across all pages */}
+      {renderTicker()}
 
       {/* Tab Title (hide during arena zone focus — image BG handles it) */}
       {(tab!=="arena" || zone || arenaView==="hub") && (
@@ -1600,7 +1608,46 @@ export default function MoodLabArena() {
         {tab==="me" && renderMe()}
       </div>
 
-      {/* Inline chat is now rendered inside the hub view */}
+      {/* Universal chat button — always visible, aligned with nav */}
+      <div onClick={()=>setChatPanel(!chatPanel)} style={{position:"fixed",bottom:18,right:14,zIndex:55,
+        width:42,height:42,borderRadius:14,display:"flex",alignItems:"center",justifyContent:"center",
+        ...GLASS_CLEAR,cursor:"pointer",fontSize:16,
+      }}>
+        💬
+        <div style={{position:"absolute",top:6,right:6,width:6,height:6,borderRadius:"50%",background:C.green,boxShadow:`0 0 4px ${C.green}`}}/>
+      </div>
+
+      {/* Universal inline chat — above nav when toggled on */}
+      {chatPanel ? <div style={{position:"fixed",bottom:66,left:10,right:10,zIndex:54,maxWidth:410,margin:"0 auto",animation:"panelSlideUp 0.3s ease both"}}>
+        <div style={{borderRadius:18,overflow:"hidden",...GLASS_CARD}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 12px",borderBottom:`1px solid ${C.border}`}}>
+            <div style={{display:"flex",alignItems:"center",gap:5}}>
+              <span style={{fontSize:12,fontWeight:800,color:C.text}}>💬 Chat</span>
+              <div style={{display:"flex",alignItems:"center",gap:3}}>
+                <div style={{width:4,height:4,borderRadius:"50%",background:C.green,animation:"pulse 2s infinite"}}/>
+                <span style={{fontSize:9,fontWeight:700,color:C.green}}>{playersNow.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+          <div ref={chatRef} style={{padding:"6px 12px",maxHeight:80,overflow:"auto"}}>
+            {chatMessages.slice(-6).map((m,i)=>(
+              <div key={i} style={{marginBottom:3,borderLeft:m.isYou?`2px solid ${C.cyan}`:"none",paddingLeft:m.isYou?6:0}}>
+                <span style={{fontSize:9,fontWeight:700,color:m.c}}>{m.u}</span>
+                <span style={{fontSize:9,color:m.isYou?C.text:C.text2,marginLeft:4}}>{m.m}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:2,padding:"4px 8px",borderTop:`1px solid ${C.border}`}}>
+            {["🔥","😂","🤯","👏","💀","❤️","⚽","🏆"].map((e,i)=>(
+              <div key={i} onClick={()=>sendChat(e)} style={{width:26,height:24,borderRadius:5,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,cursor:"pointer",background:`${C.text3}06`}}>{e}</div>
+            ))}
+          </div>
+          <div style={{display:"flex",gap:5,padding:"5px 8px 8px",borderTop:`1px solid ${C.border}`}}>
+            <input type="text" value={chatInput} onChange={e=>setChatInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")sendChat();}} placeholder="Say something..." style={{flex:1,padding:"6px 10px",borderRadius:8,border:`1px solid ${C.border}`,background:"rgba(255,255,255,0.03)",color:C.text,fontSize:10,outline:"none",fontFamily:"inherit"}}/>
+            <div onClick={()=>sendChat()} style={{padding:"6px 12px",borderRadius:8,cursor:"pointer",background:`${C.cyan}12`,border:`1px solid ${C.cyan}20`,fontSize:10,fontWeight:700,color:C.cyan}}>Send</div>
+          </div>
+        </div>
+      </div> : null}
 
       {/* Overlays */}
       {renderGameOverlay()}
